@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Core.Calendar.Entities;
 using TechChallenge.Core.Calendar.Repositories;
@@ -37,10 +38,10 @@ namespace TechChallenge.WebApp.Controllers
                 return new BadRequestObjectResult("Start time or end time is incorrect");
             }
 
-            string username = User?.FindFirst(ClaimTypes.Name)?.Value;
+            var username = User?.FindFirst(ClaimTypes.Name)?.Value;
 
             _availabilityService.InsertAvailability(availability, username);
-            return Ok("sucess");
+            return new ObjectResult(availability) { StatusCode = StatusCodes.Status201Created };
         }
 
         [HttpGet]

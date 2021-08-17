@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Core.Calendar.Entities;
 using TechChallenge.Core.Calendar.Repositories;
@@ -36,7 +37,7 @@ namespace TechChallenge.WebApp.Controllers
             }
 
             await _userRepository.Insert(user);
-            return Ok("sucess");
+            return new ObjectResult(user) { StatusCode = StatusCodes.Status201Created };
         }
 
         [HttpGet]
@@ -64,7 +65,7 @@ namespace TechChallenge.WebApp.Controllers
 
             var token = TokenService.GenerateToken(userLogged);
 
-            return Ok(new {user = userLogged, token});
+            return new ObjectResult(new {user = userLogged, token}) { StatusCode = StatusCodes.Status201Created };
         }
     }
 }
