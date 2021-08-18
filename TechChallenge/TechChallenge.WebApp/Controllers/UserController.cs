@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Core.Calendar.Entities;
-using TechChallenge.Core.Calendar.Repositories;
+using TechChallenge.Core.Calendar.Services;
 using TechChallenge.Core.Calendar.Util.Auth;
 using TechChallenge.WebApp.Validators;
 
@@ -12,11 +12,11 @@ namespace TechChallenge.WebApp.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -28,22 +28,18 @@ namespace TechChallenge.WebApp.Controllers
             {
                 return new BadRequestObjectResult(validRes.ToString(","));
             }
-            
-            var userWithSameUsername = await _userRepository.FindUserByUsername(user.Username);
 
-            if (userWithSameUsername != null)
-            {
-                return new BadRequestObjectResult("Existing username, please enter another username");
-            }
+            var insertWithSuccess = await _userService.Insert(user);
 
-            await _userRepository.Insert(user);
-            return new ObjectResult(user) { StatusCode = StatusCodes.Status201Created };
+            return !insertWithSuccess ? 
+                new BadRequestObjectResult("Existing username, please enter another username") : 
+                new ObjectResult(user) {StatusCode = StatusCodes.Status201Created};
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _userRepository.Find());
+            return Ok(await _userService.Find());
         }
 
         [HttpPost("login")]
@@ -56,7 +52,7 @@ namespace TechChallenge.WebApp.Controllers
                 return new BadRequestObjectResult(validRes.ToString(","));
             }
 
-            User userLogged = await _userRepository.FindUser(user.Username, user.Password);
+            User userLogged = await _userService.FindUser(user.Username, user.Password);
 
             if (userLogged == null)
             {
@@ -65,7 +61,7 @@ namespace TechChallenge.WebApp.Controllers
 
             var token = TokenService.GenerateToken(userLogged);
 
-            return new ObjectResult(new {user = userLogged, token}) { StatusCode = StatusCodes.Status201Created };
+            return new ObjectResult(new {user = userLogged, token}) {StatusCode = StatusCodes.Status201Created};
         }
     }
 }

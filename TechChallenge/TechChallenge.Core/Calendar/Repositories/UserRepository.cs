@@ -39,10 +39,5 @@ namespace TechChallenge.Core.Calendar.Repositories
         {
             return await this._apiContext.Users.SingleOrDefaultAsync(x => string.Equals(x.Username, username, StringComparison.CurrentCultureIgnoreCase));
         }
-
-        public async Task<User> FindUserById(string id)
-        {
-            return await this._apiContext.Users.SingleOrDefaultAsync(x => x.Id == id);
-        }
     }
 }

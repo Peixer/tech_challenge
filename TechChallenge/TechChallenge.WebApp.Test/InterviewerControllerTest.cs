@@ -39,7 +39,7 @@ namespace TechChallenge.WebApp.Test
                 EndTime = "10pm", StartTime = "9pm", DayOfWeek = DayOfWeek.Monday, EndDate = DateTime.Now, StartDate = DateTime.Now
             });
 
-            result.Value.ToString().ShouldBe("sucess");
+            result.StatusCode.ShouldBe(201);
         }
 
         [Test]
