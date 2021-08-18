@@ -30,7 +30,7 @@ namespace TechChallenge.WebApp.Test
 
             controller =
                 new CandidateController(new AvailabilityService(availabilityRepositoryMock.Object,
-                    userRepositoryMock.Object), userRepositoryMock.Object);
+                    userRepositoryMock.Object));
         }
 
         [Test]

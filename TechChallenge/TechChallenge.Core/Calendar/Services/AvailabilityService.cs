@@ -99,5 +99,10 @@ namespace TechChallenge.Core.Calendar.Services
 
             return matches;
         }
+
+        public Task<List<Availability>> Find()
+        {
+            return this._availabilityRepository.Find();
+        }
     }
 }

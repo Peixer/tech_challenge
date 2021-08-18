@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Core.Calendar.Entities;
-using TechChallenge.Core.Calendar.Repositories;
 using TechChallenge.Core.Calendar.Services;
 using TechChallenge.WebApp.Validators;
 
@@ -15,12 +14,10 @@ namespace TechChallenge.WebApp.Controllers
     [Route("api/interviewers")]
     public class InterviewerController : ControllerBase
     {
-        private readonly IAvailabilityRepository _availabilityRepository;
         private readonly IAvailabilityService _availabilityService;
 
-        public InterviewerController(IAvailabilityRepository availabilityRepository, IAvailabilityService availabilityService)
+        public InterviewerController(IAvailabilityService availabilityService)
         {
-            _availabilityRepository = availabilityRepository;
             _availabilityService = availabilityService;
         }
 
@@ -47,7 +44,7 @@ namespace TechChallenge.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _availabilityRepository.Find());
+            return Ok(await _availabilityService.Find());
         }
     }
 }

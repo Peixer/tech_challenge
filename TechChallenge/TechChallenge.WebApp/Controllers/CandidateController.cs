@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Core.Calendar.Entities;
-using TechChallenge.Core.Calendar.Repositories;
 using TechChallenge.Core.Calendar.Services;
 using TechChallenge.WebApp.Models;
 using TechChallenge.WebApp.Validators;
@@ -19,12 +18,10 @@ namespace TechChallenge.WebApp.Controllers
     public class CandidateController : ControllerBase
     {
         private readonly IAvailabilityService _availabilityService;
-        private readonly IUserRepository _userRepository;
 
-        public CandidateController(IAvailabilityService availabilityService, IUserRepository userRepository)
+        public CandidateController(IAvailabilityService availabilityService)
         {
             _availabilityService = availabilityService;
-            _userRepository = userRepository;
         }
 
         [Authorize(Roles = "Candidate")]

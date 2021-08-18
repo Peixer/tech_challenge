@@ -14,6 +14,7 @@ namespace TechChallenge.WebApp.Test
     public class InterviewerControllerTest
     {
         private Mock<IAvailabilityRepository> availabilityRepositoryMock;
+        private Mock<IAvailabilityService> availabilityServiceMock;
         private Mock<IUserRepository> userRepositoryMock;
         private InterviewerController controller;
 
@@ -21,6 +22,7 @@ namespace TechChallenge.WebApp.Test
         public void Setup()
         {
             availabilityRepositoryMock = new Mock<IAvailabilityRepository>();
+            availabilityServiceMock = new Mock<IAvailabilityService>();
             userRepositoryMock = new Mock<IUserRepository>();
 
             userRepositoryMock.Setup(x => x.FindUserByUsername(It.IsAny<string>()))
@@ -28,7 +30,7 @@ namespace TechChallenge.WebApp.Test
             availabilityRepositoryMock.Setup(x => x.Insert(It.IsAny<Availability>()))
                 .Returns(Task.FromResult(true));
 
-            controller = new InterviewerController(availabilityRepositoryMock.Object, new AvailabilityService(availabilityRepositoryMock.Object, userRepositoryMock.Object));
+            controller = new InterviewerController(new AvailabilityService(availabilityRepositoryMock.Object, userRepositoryMock.Object));
         }
 
         [Test]

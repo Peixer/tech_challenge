@@ -16,5 +16,6 @@ namespace TechChallenge.Core.Calendar.Services
             List<Availability> availabilitiesInterviewers);
 
         List<HourAvailability> GetMatchesFromAvailabilities(List<HourAvailability> hourAvailabilities);
+        Task<List<Availability>> Find();   
     }
 }
